@@ -18,6 +18,11 @@ main :: proc() {
 		rl.ClearBackground(rl.BLACK)
 		fmt.println((SCREEN_HEIGHT / CELL_SIZE), "The Chunk size")
 
+		//the plan:
+		// 1 blue CELL_SIZE square top left corner that we 
+		// can control with WSAD
+
+
 		rl.EndDrawing()
 	}
 }

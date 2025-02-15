@@ -1,16 +1,30 @@
 package gnipahellir
 
 import "core:fmt"
-import "vendor:raylib"
+import rl "vendor:raylib"
 
 main :: proc() {
 	fmt.println("in the begining there was a void")
 
-	raylib.InitWindow(1000, 1000, "The Grid Miner")
+	rl.InitWindow(1000, 1000, "The Grid Miner")
 
-	for {
-		raylib.BeginDrawing()
-		raylib.ClearBackground(raylib.BLACK)
-		raylib.EndDrawing()
+	for !rl.WindowShouldClose() {
+		rl.BeginDrawing()
+
+		rl.ClearBackground(rl.BLACK)
+
+
+		//the grid draw
+
+
+		//the movments
+
+
+		//the grid updates
+
+
+		rl.EndDrawing()
 	}
+
+
 }

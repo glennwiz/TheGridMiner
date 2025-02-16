@@ -30,27 +30,26 @@ main :: proc() {
 	for !rl.WindowShouldClose() {
 
 		rl.BeginDrawing()
-
 		rl.ClearBackground(rl.DARKPURPLE)
 
+		rl.SetTargetFPS(60)
+
 		//the plan:
-		//i want to draw the grid 
-		// grid will be cell sized grid we keeping it 10 x 10 atm 
+		//fill the grid with diffrent kind og cell types, like gold, rock, crystals m.m
 
 		grid_x: i32 = CELL_SIZE
 		grid_y: i32 = CELL_SIZE
 
-		for i in 0 ..< 10 {
-			rl.DrawLine(grid_x, 0, grid_x, 100, rl.BLACK)
+		for i in 0 ..< SCREEN_WIDTH {
+			rl.DrawLine(grid_x, 0, grid_x, SCREEN_HEIGHT, rl.BLACK)
 
 			grid_x += CELL_SIZE
 		}
 
-		for i in 0 ..< 10 {
-			rl.DrawLine(0, grid_y, 100, grid_y, rl.BLACK)
+		for i in 0 ..< SCREEN_HEIGHT {
+			rl.DrawLine(0, grid_y, SCREEN_WIDTH, grid_y, rl.BLACK)
 			grid_y += CELL_SIZE
 		}
-
 
 		if (rl.IsKeyPressed(.W)) {
 			fmt.println("W pressed")

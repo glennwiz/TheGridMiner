@@ -12,10 +12,11 @@ SCREEN_HEIGHT :: 700
 GRID :: [SCREEN_WIDTH / CELL_SIZE][SCREEN_HEIGHT / CELL_SIZE]Cell
 grid: GRID
 Cell :: struct {
-	life: rune,
-	x:    i32,
-	y:    i32,
-	type: Type,
+	life:    rune,
+	x:       i32,
+	y:       i32,
+	type:    Type,
+	visible: bool,
 }
 
 Type :: enum {
@@ -35,6 +36,8 @@ debug_vals :: struct {
 	type: Type,
 }
 
+list_of_voids: [dynamic]Cell
+
 main :: proc() {
 	fmt.println("void closed")
 
@@ -49,33 +52,32 @@ main :: proc() {
 
 			valx := (locx / 10) - i
 			valy := (locy / 10) - ii
-			//fmt.println("----------------------------------------", valx)
-			//fmt.println("----------------------------------------_", valy)
 
 			//if we are close to the controled sqare we skip creating cell there
 			if valx < 4 && math.abs(valy) < 4 {
 				if valy < 4 && math.abs(valx) < 4 {
-
-					fmt.println("---------------------------------------- x", valx)
-					fmt.println("---------------------------------------- y", valy)
 
 					c: Cell
 					c.x = i
 					c.y = ii
 					c.life = 0
 					c.type = .void
+					c.visible = true
+
+
 					grid[i][ii] = c
 
+					append(&list_of_voids, c)
 					continue
 				}
 			}
 
-
 			theNum := r.float64()
+
 			c: Cell
 			c.x = i
 			c.y = ii
-
+			c.visible = false
 
 			if (theNum < 0.1) {
 				c.type = .gold
@@ -101,7 +103,6 @@ main :: proc() {
 		}
 	}
 
-
 	for !rl.WindowShouldClose() {
 
 		rl.BeginDrawing()
@@ -111,9 +112,7 @@ main :: proc() {
 		grid_x: i32 = CELL_SIZE
 		grid_y: i32 = CELL_SIZE
 
-
-		// The plan:
-
+		// The plan: ???
 
 		// the X grid draw
 		for i in 0 ..< SCREEN_WIDTH {
@@ -131,6 +130,14 @@ main :: proc() {
 		for x in 0 ..< SCREEN_WIDTH / CELL_SIZE {
 			for y in 0 ..< SCREEN_HEIGHT / CELL_SIZE {
 				cell := &grid[x][y]
+
+				if cell.visible == false {
+
+					rl.DrawRectangle(cell.x * 10, cell.y * 10, CELL_SIZE, CELL_SIZE, rl.DARKGRAY)
+
+					continue
+
+				}
 
 				if (cell.type == .gold) {
 					rl.DrawCircle(
@@ -188,11 +195,24 @@ main :: proc() {
 		}
 
 		check_player_cell_bounds()
+		//cells that are next to void should always be visible
+
+		for c in 0 ..< len(list_of_voids) {
+
+			cc := list_of_voids[c]
+
+			(grid[cc.x - 1][cc.y]).visible = true
+			(grid[cc.x][cc.y - 1]).visible = true
+			(grid[cc.x + 1][cc.y]).visible = true
+			(grid[cc.x][cc.y + 1]).visible = true
+
+		}
 
 		rl.DrawRectangle(locx, locy, CELL_SIZE, CELL_SIZE, {40, 85, 120, 255})
 		rl.EndDrawing()
 	}
 }
+
 d: debug_vals
 check_player_cell_bounds :: proc() {
 

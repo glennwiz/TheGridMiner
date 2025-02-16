@@ -41,9 +41,16 @@ main :: proc() {
 		grid_y: i32 = CELL_SIZE
 
 		for i in 0 ..< 10 {
+			rl.DrawLine(grid_x, 0, grid_x, 100, rl.BLACK)
+
+			grid_x += CELL_SIZE
+		}
+
+		for i in 0 ..< 10 {
 			rl.DrawLine(0, grid_y, 100, grid_y, rl.BLACK)
 			grid_y += CELL_SIZE
 		}
+
 
 		if (rl.IsKeyPressed(.W)) {
 			fmt.println("W pressed")

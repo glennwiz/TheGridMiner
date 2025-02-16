@@ -41,6 +41,19 @@ main :: proc() {
 			fmt.println("W pressed")
 		}
 
+		if (rl.IsKeyPressed(.A)) {
+			fmt.println("A pressed")
+		}
+
+		if (rl.IsKeyPressed(.S)) {
+			fmt.println("S pressed")
+		}
+
+		if (rl.IsKeyPressed(.D)) {
+			fmt.println("D pressed")
+		}
+
+
 		rl.DrawRectangle(locx, locy, CELL_SIZE, CELL_SIZE, rl.BLUE)
 
 		rl.EndDrawing()

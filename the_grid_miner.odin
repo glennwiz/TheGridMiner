@@ -15,6 +15,10 @@ Cell :: struct {
 }
 
 
+locx: i32 = 0
+locy: i32 = 0
+
+
 Alive_Cells := [dynamic]Cell{}
 
 
@@ -24,19 +28,20 @@ main :: proc() {
 	rl.InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "The Grid Miner")
 
 	for !rl.WindowShouldClose() {
+
 		rl.BeginDrawing()
 
-		rl.ClearBackground(rl.BLACK)
-		fmt.println((SCREEN_HEIGHT / CELL_SIZE), "The Chunk size")
+		rl.ClearBackground(rl.PURPLE)
 
 		//the plan:
 		// 1 blue CELL_SIZE square top left corner that we 
 		// can control with WSAD
 
-		locx: i32 = 0
-		locy: i32 = 0
+		if (rl.IsKeyPressed(.W)) {
+			fmt.println("W pressed")
+		}
 
-		rl.DrawRectangle(locx, locy, 10, 10, rl.BLUE)
+		rl.DrawRectangle(locx, locy, CELL_SIZE, CELL_SIZE, rl.BLUE)
 
 		rl.EndDrawing()
 	}

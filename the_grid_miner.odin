@@ -72,27 +72,13 @@ main :: proc() {
 		rl.ClearBackground(rl.DARKPURPLE)
 
 		rl.SetTargetFPS(60)
+		grid_x: i32 = CELL_SIZE
+		grid_y: i32 = CELL_SIZE
+
 
 		//the plan:
 		// Draw a small circle for gold and silver, a small sqare for rock, an a polyline for a crystal
 		// at loc for the cell
-
-
-		for x in 0 ..< SCREEN_WIDTH / CELL_SIZE {
-			for y in 0 ..< SCREEN_HEIGHT / CELL_SIZE {
-				cell := &grid[x][y]
-
-				if (cell.type ==
-					   .gold) {rl.DrawSphere({f32(cell.x * 10), f32(cell.y * 10), 0}, 9, rl.GOLD)}
-				if (cell.type == .silver) {}
-				if (cell.type == .crystal) {}
-				if (cell.type == .rock) {}
-			}
-		}
-
-		grid_x: i32 = CELL_SIZE
-		grid_y: i32 = CELL_SIZE
-
 		for i in 0 ..< SCREEN_WIDTH {
 			rl.DrawLine(grid_x, 0, grid_x, SCREEN_HEIGHT, rl.BLACK)
 
@@ -102,6 +88,25 @@ main :: proc() {
 		for i in 0 ..< SCREEN_HEIGHT {
 			rl.DrawLine(0, grid_y, SCREEN_WIDTH, grid_y, rl.BLACK)
 			grid_y += CELL_SIZE
+		}
+
+
+		for x in 0 ..< SCREEN_WIDTH / CELL_SIZE {
+			for y in 0 ..< SCREEN_HEIGHT / CELL_SIZE {
+				cell := &grid[x][y]
+
+				if (cell.type == .gold) {
+					rl.DrawCircle(
+						cell.x * 10 + (CELL_SIZE / 2),
+						cell.y * 10 + (CELL_SIZE / 2),
+						(CELL_SIZE / 2) / 2,
+						rl.GOLD,
+					)
+				}
+				if (cell.type == .silver) {}
+				if (cell.type == .crystal) {}
+				if (cell.type == .rock) {}
+			}
 		}
 
 		if (rl.IsKeyDown(.W)) {

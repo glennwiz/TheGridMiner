@@ -37,30 +37,31 @@ main :: proc() {
 	for i: i32 = 0; i < SCREEN_WIDTH / CELL_SIZE; i += 1 {
 		for ii: i32 = 0; ii < SCREEN_HEIGHT / CELL_SIZE; ii += 1 {
 
-			fmt.println("cell loc", i, ii)
-
 			theNum := r.float64()
 			c: Cell
 			c.x = i
 			c.y = ii
 
-
-			if (theNum < 0.1) {
+			//fmt.println("creating cell", theNum)
+			if (theNum < 0.0000002) {
 				c.type = .gold
+				fmt.println("--------------------------------------------------")
 			}
 
 			if (theNum > 0.1 && theNum < 0.3) {
 				c.type = .silver
+				fmt.println("--")
 			}
 
 			if (theNum > 0.3 && theNum < 0.5) {
 				c.type = .crystal
+				fmt.println("---")
 			}
 
 			if (theNum > 0.5) {
 				c.type = .rock
+				fmt.println("----")
 			}
-			//fmt.println("cell type", c.type, c.x, c.y)
 			grid[i][ii] = c
 		}
 	}
@@ -103,9 +104,33 @@ main :: proc() {
 						rl.GOLD,
 					)
 				}
-				if (cell.type == .silver) {}
-				if (cell.type == .crystal) {}
-				if (cell.type == .rock) {}
+				if (cell.type == .silver) {
+					rl.DrawCircle(
+						cell.x * 10 + (CELL_SIZE / 2),
+						cell.y * 10 + (CELL_SIZE / 2),
+						(CELL_SIZE / 2) / 2,
+						rl.GRAY,
+					)
+				}
+
+				if (cell.type == .crystal) {
+					rl.DrawCircle(
+						cell.x * 10 + (CELL_SIZE / 2),
+						cell.y * 10 + (CELL_SIZE / 2),
+						(CELL_SIZE / 2) / 2,
+						rl.SKYBLUE,
+					)
+
+				}
+				if (cell.type == .rock) {
+					rl.DrawCircle(
+						cell.x * 10 + (CELL_SIZE / 2),
+						cell.y * 10 + (CELL_SIZE / 2),
+						(CELL_SIZE / 2) / 2,
+						rl.DARKGRAY,
+					)
+
+				}
 			}
 		}
 

@@ -23,10 +23,16 @@ Type :: enum {
 	silver,
 	rock,
 	crystal,
+	void,
 }
 
 locx: i32 = 0
 locy: i32 = 0
+
+debug_vals :: struct {
+	x: i32,
+	y: i32,
+}
 
 main :: proc() {
 	fmt.println("void closed")
@@ -53,9 +59,17 @@ main :: proc() {
 					fmt.println("---------------------------------------- x", valx)
 					fmt.println("---------------------------------------- y", valy)
 
+					c: Cell
+					c.x = i
+					c.y = ii
+					c.life = 0
+					c.type = .void
+					grid[i][ii] = c
+
 					continue
 				}
 			}
+
 
 			theNum := r.float64()
 			c: Cell
@@ -142,7 +156,6 @@ main :: proc() {
 						(CELL_SIZE / 2) / 2,
 						rl.SKYBLUE,
 					)
-
 				}
 
 				if (cell.type == .rock) {
@@ -153,7 +166,6 @@ main :: proc() {
 						CELL_SIZE - 2,
 						rl.DARKGRAY,
 					)
-
 				}
 			}
 		}
@@ -174,6 +186,7 @@ main :: proc() {
 			locx += 1
 		}
 
+		check_player_cell_bounds()
 
 		rl.DrawRectangle(locx, locy, CELL_SIZE, CELL_SIZE, {40, 85, 120, 255})
 		rl.EndDrawing()
@@ -186,6 +199,9 @@ check_player_cell_bounds :: proc() {
 	x := locx / 10
 	y := locy / 10
 
-	fmt.println(x, y)
+	fmt.println("player loc", x, y)
+
+	c := grid[x][y]
+	fmt.println("type", c.type)
 
 }

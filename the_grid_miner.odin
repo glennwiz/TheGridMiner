@@ -37,9 +37,13 @@ main :: proc() {
 		//i want to draw the grid 
 		// grid will be cell sized grid we keeping it 10 x 10 atm 
 
+		grid_x: i32 = CELL_SIZE
+		grid_y: i32 = CELL_SIZE
 
-		rl.DrawLine(10, 10, 100, 100, rl.BLACK)
-
+		for i in 0 ..< 10 {
+			rl.DrawLine(0, grid_y, 100, grid_y, rl.BLACK)
+			grid_y += CELL_SIZE
+		}
 
 		if (rl.IsKeyPressed(.W)) {
 			fmt.println("W pressed")
@@ -60,7 +64,6 @@ main :: proc() {
 			fmt.println("D pressed")
 			locx += 1
 		}
-
 
 		rl.DrawRectangle(locx, locy, CELL_SIZE, CELL_SIZE, rl.BLUE)
 

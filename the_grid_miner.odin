@@ -12,6 +12,7 @@ SCREEN_HEIGHT :: 700
 GRID :: [SCREEN_WIDTH / CELL_SIZE][SCREEN_HEIGHT / CELL_SIZE]Cell
 grid: GRID
 Cell :: struct {
+	life: rune,
 	x:    i32,
 	y:    i32,
 	type: Type,
@@ -61,20 +62,25 @@ main :: proc() {
 			c.x = i
 			c.y = ii
 
+
 			if (theNum < 0.1) {
 				c.type = .gold
+				c.life = 200
 			}
 
 			if (theNum > 0.1 && theNum < 0.3) {
 				c.type = .silver
+				c.life = 100
 			}
 
 			if (theNum > 0.3 && theNum < 0.5) {
 				c.type = .crystal
+				c.life = 20
 			}
 
 			if (theNum > 0.5) {
 				c.type = .rock
+				c.life = 10
 			}
 
 			grid[i][ii] = c

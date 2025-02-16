@@ -174,7 +174,18 @@ main :: proc() {
 			locx += 1
 		}
 
+
 		rl.DrawRectangle(locx, locy, CELL_SIZE, CELL_SIZE, {40, 85, 120, 255})
 		rl.EndDrawing()
 	}
+}
+
+check_player_cell_bounds :: proc() {
+
+	//player loc
+	x := locx / 10
+	y := locy / 10
+
+	fmt.println(x, y)
+
 }

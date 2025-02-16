@@ -31,7 +31,7 @@ main :: proc() {
 
 		rl.BeginDrawing()
 
-		rl.ClearBackground(rl.PURPLE)
+		rl.ClearBackground(rl.DARKPURPLE)
 
 		//the plan:
 		// 1 blue CELL_SIZE square top left corner that we 
@@ -39,18 +39,22 @@ main :: proc() {
 
 		if (rl.IsKeyPressed(.W)) {
 			fmt.println("W pressed")
+			locy -= 1
 		}
 
 		if (rl.IsKeyPressed(.A)) {
 			fmt.println("A pressed")
+			locx -= 1
 		}
 
 		if (rl.IsKeyPressed(.S)) {
 			fmt.println("S pressed")
+			locy += 1
 		}
 
 		if (rl.IsKeyPressed(.D)) {
 			fmt.println("D pressed")
+			locx += 1
 		}
 
 

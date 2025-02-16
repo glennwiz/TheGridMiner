@@ -30,8 +30,9 @@ locx: i32 = 0
 locy: i32 = 0
 
 debug_vals :: struct {
-	x: i32,
-	y: i32,
+	x:    i32,
+	y:    i32,
+	type: Type,
 }
 
 main :: proc() {
@@ -39,7 +40,6 @@ main :: proc() {
 
 	rl.SetTraceLogLevel(.WARNING)
 	rl.InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "The Grid Miner")
-
 
 	locx = SCREEN_WIDTH / 2
 	locy = SCREEN_HEIGHT / 2
@@ -49,8 +49,8 @@ main :: proc() {
 
 			valx := (locx / 10) - i
 			valy := (locy / 10) - ii
-			//			fmt.println("----------------------------------------", valx)
-			//			fmt.println("----------------------------------------_", valy)
+			//fmt.println("----------------------------------------", valx)
+			//fmt.println("----------------------------------------_", valy)
 
 			//if we are close to the controled sqare we skip creating cell there
 			if valx < 4 && math.abs(valy) < 4 {
@@ -118,9 +118,9 @@ main :: proc() {
 		// the X grid draw
 		for i in 0 ..< SCREEN_WIDTH {
 			rl.DrawLine(grid_x, 0, grid_x, SCREEN_HEIGHT, rl.BLACK)
-
 			grid_x += CELL_SIZE
 		}
+
 		// the Y grid draw
 		for i in 0 ..< SCREEN_HEIGHT {
 			rl.DrawLine(0, grid_y, SCREEN_WIDTH, grid_y, rl.BLACK)
@@ -140,6 +140,7 @@ main :: proc() {
 						rl.GOLD,
 					)
 				}
+
 				if (cell.type == .silver) {
 					rl.DrawCircle(
 						cell.x * 10 + (CELL_SIZE / 2) - 1,
@@ -192,16 +193,25 @@ main :: proc() {
 		rl.EndDrawing()
 	}
 }
-
+d: debug_vals
 check_player_cell_bounds :: proc() {
 
 	//player loc
 	x := locx / 10
 	y := locy / 10
 
-	fmt.println("player loc", x, y)
+	if d.x != x || d.y != y {
+		fmt.println("player loc", x, y)
 
+		d.x = x
+		d.y = y
+	}
 	c := grid[x][y]
-	fmt.println("type", c.type)
 
+	if d.type != c.type {
+
+		fmt.println("type", c.type)
+
+		d.type = c.type
+	}
 }

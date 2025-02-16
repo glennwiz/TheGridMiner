@@ -9,7 +9,7 @@ SCREEN_WIDTH :: 1000
 SCREEN_HEIGHT :: 700
 
 GRID :: [SCREEN_WIDTH / CELL_SIZE][SCREEN_HEIGHT / CELL_SIZE]Cell
-
+grid: GRID
 Cell :: struct {
 	x:    i32,
 	y:    i32,
@@ -35,26 +35,34 @@ main :: proc() {
 
 	//init the grid
 
-	for i := 0; i < SCREEN_WIDTH; i += CELL_SIZE {
-		for ii := 0; ii < SCREEN_HEIGHT; ii += CELL_SIZE {
+	for i: i32 = 0; i < SCREEN_WIDTH / CELL_SIZE; i += 1 {
+		for ii: i32 = 0; ii < SCREEN_HEIGHT / CELL_SIZE; ii += 1 {
 
 			fmt.println("cell loc", i, ii)
 
-			if (r.float64() < 0.1) {
-				//gold cell
+			theNum := r.float64()
+			c: Cell
+			c.x = i
+			c.y = ii
+
+
+			if (theNum < 0.1) {
+				c.type = .gold
 			}
 
-			if (r.float64() > 0.1 && r.float64() < 0.3) {
-				//silver cell
+			if (theNum > 0.1 && theNum < 0.3) {
+				c.type = .silver
 			}
 
-			if (r.float64() > 0.3 && r.float64() < 0.5) {
-				//crystal
+			if (theNum > 0.3 && theNum < 0.5) {
+				c.type = .crystal
 			}
 
-			if (r.float64() > 0.5) {
-				//rock
+			if (theNum > 0.5) {
+				c.type = .rock
 			}
+			fmt.println("cell type", c.type)
+			grid[i][ii] = c
 		}
 	}
 

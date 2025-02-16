@@ -7,7 +7,7 @@ CELL_SIZE :: 10
 SCREEN_WIDTH :: 1000
 SCREEN_HEIGHT :: 700
 
-GRID :: [100][100]Cell
+GRID :: [10][10]Cell
 
 Cell :: struct {
 	x: [10]i32,
@@ -23,7 +23,7 @@ Alive_Cells := [dynamic]Cell{}
 
 
 main :: proc() {
-	fmt.println("in the begining there was a void")
+	fmt.println("the void is starting to close")
 
 	rl.InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "The Grid Miner")
 
@@ -34,8 +34,12 @@ main :: proc() {
 		rl.ClearBackground(rl.DARKPURPLE)
 
 		//the plan:
-		// 1 blue CELL_SIZE square top left corner that we 
-		// can control with WSAD
+		//i want to draw the grid 
+		// grid will be cell sized grid we keeping it 10 x 10 atm 
+
+
+		rl.DrawLine(10, 10, 100, 100, rl.BLACK)
+
 
 		if (rl.IsKeyPressed(.W)) {
 			fmt.println("W pressed")

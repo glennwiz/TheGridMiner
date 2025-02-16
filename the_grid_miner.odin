@@ -36,7 +36,7 @@ debug_vals :: struct {
 	type: Type,
 }
 
-list_of_voids: [dynamic]Cell
+list_of_voids: [dynamic]^Cell
 
 main :: proc() {
 	fmt.println("void closed")
@@ -67,7 +67,7 @@ main :: proc() {
 
 					grid[i][ii] = c
 
-					append(&list_of_voids, c)
+					append(&list_of_voids, &c)
 					continue
 				}
 			}
@@ -175,6 +175,17 @@ main :: proc() {
 						rl.DARKGRAY,
 					)
 				}
+				if (cell.type == .void) {
+					rl.DrawRectangle(
+						cell.x * 10,
+						cell.y * 10,
+						CELL_SIZE - 2,
+						CELL_SIZE - 2,
+						rl.BLACK,
+					)
+				}
+
+
 			}
 		}
 
@@ -195,18 +206,7 @@ main :: proc() {
 		}
 
 		check_player_cell_bounds()
-		//cells that are next to void should always be visible
-
-		for c in 0 ..< len(list_of_voids) {
-
-			cc := list_of_voids[c]
-
-			(grid[cc.x - 1][cc.y]).visible = true
-			(grid[cc.x][cc.y - 1]).visible = true
-			(grid[cc.x + 1][cc.y]).visible = true
-			(grid[cc.x][cc.y + 1]).visible = true
-
-		}
+		set_visible_cells()
 
 		rl.DrawRectangle(locx, locy, CELL_SIZE, CELL_SIZE, {40, 85, 120, 255})
 		rl.EndDrawing()
@@ -220,18 +220,31 @@ check_player_cell_bounds :: proc() {
 	x := locx / 10
 	y := locy / 10
 
+	c := &grid[x][y]
+
 	if d.x != x || d.y != y {
 		fmt.println("player loc", x, y)
 
 		d.x = x
 		d.y = y
-	}
-	c := grid[x][y]
-
-	if d.type != c.type {
-
 		fmt.println("type", c.type)
+	}
 
-		d.type = c.type
+	append(&list_of_voids, c)
+	c.type = .void
+}
+
+set_visible_cells :: proc() {
+
+	//cells that are next to void should always be visible
+	for c in 0 ..< len(list_of_voids) {
+
+		cc := list_of_voids[c]
+
+		(grid[cc.x - 1][cc.y]).visible = true
+		(grid[cc.x][cc.y - 1]).visible = true
+		(grid[cc.x + 1][cc.y]).visible = true
+		(grid[cc.x][cc.y + 1]).visible = true
+
 	}
 }

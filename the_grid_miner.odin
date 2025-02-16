@@ -43,9 +43,9 @@ main :: proc() {
 			c.y = ii
 
 			//fmt.println("creating cell", theNum)
-			if (theNum < 0.0000002) {
+			if (theNum < 0.1) {
 				c.type = .gold
-				fmt.println("--------------------------------------------------")
+				fmt.println("-")
 			}
 
 			if (theNum > 0.1 && theNum < 0.3) {

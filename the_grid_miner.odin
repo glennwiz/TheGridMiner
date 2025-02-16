@@ -32,7 +32,6 @@ main :: proc() {
 	rl.SetTraceLogLevel(.WARNING)
 	rl.InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "The Grid Miner")
 
-
 	//init the grid
 
 	for i: i32 = 0; i < SCREEN_WIDTH / CELL_SIZE; i += 1 {
@@ -61,7 +60,7 @@ main :: proc() {
 			if (theNum > 0.5) {
 				c.type = .rock
 			}
-			fmt.println("cell type", c.type)
+			//fmt.println("cell type", c.type, c.x, c.y)
 			grid[i][ii] = c
 		}
 	}
@@ -75,7 +74,21 @@ main :: proc() {
 		rl.SetTargetFPS(60)
 
 		//the plan:
-		//fill the grid with diffrent kind og cell types, like gold, rock, crystals m.m
+		// Draw a small circle for gold and silver, a small sqare for rock, an a polyline for a crystal
+		// at loc for the cell
+
+
+		for x in 0 ..< SCREEN_WIDTH / CELL_SIZE {
+			for y in 0 ..< SCREEN_HEIGHT / CELL_SIZE {
+				cell := &grid[x][y]
+
+				if (cell.type ==
+					   .gold) {rl.DrawSphere({f32(cell.x * 10), f32(cell.y * 10), 0}, 9, rl.GOLD)}
+				if (cell.type == .silver) {}
+				if (cell.type == .crystal) {}
+				if (cell.type == .rock) {}
+			}
+		}
 
 		grid_x: i32 = CELL_SIZE
 		grid_y: i32 = CELL_SIZE
@@ -90,7 +103,6 @@ main :: proc() {
 			rl.DrawLine(0, grid_y, SCREEN_WIDTH, grid_y, rl.BLACK)
 			grid_y += CELL_SIZE
 		}
-
 
 		if (rl.IsKeyDown(.W)) {
 			fmt.println("W pressed")

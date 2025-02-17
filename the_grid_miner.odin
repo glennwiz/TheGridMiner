@@ -11,6 +11,8 @@ SCREEN_HEIGHT :: 700
 
 GRID :: [SCREEN_WIDTH / CELL_SIZE][SCREEN_HEIGHT / CELL_SIZE]Cell
 grid: GRID
+
+
 Cell :: struct {
 	life:    rune,
 	x:       i32,
@@ -18,6 +20,7 @@ Cell :: struct {
 	type:    Type,
 	visible: bool,
 }
+list_of_voids: [dynamic]^Cell
 
 Type :: enum {
 	gold,
@@ -27,16 +30,25 @@ Type :: enum {
 	void,
 }
 
-locx: i32 = 0
-locy: i32 = 0
-
 debug_vals :: struct {
 	x:    i32,
 	y:    i32,
 	type: Type,
 }
 
-list_of_voids: [dynamic]^Cell
+vector2 :: struct {
+	x: i32,
+	y: i32,
+}
+
+locations :: struct {
+	range: [3]vector2,
+}
+
+loc_data: locations
+
+locx: i32 = 0
+locy: i32 = 0
 
 main :: proc() {
 	fmt.println("void closed")
@@ -49,6 +61,7 @@ main :: proc() {
 	//init the grid
 	for i: i32 = 0; i < SCREEN_WIDTH / CELL_SIZE; i += 1 {
 		for ii: i32 = 0; ii < SCREEN_HEIGHT / CELL_SIZE; ii += 1 {
+
 
 			valx := (locx / 10) - i
 			valy := (locy / 10) - ii
@@ -95,6 +108,7 @@ main :: proc() {
 			}
 
 			if (theNum > 0.5) {
+
 				c.type = .rock
 				c.life = 10
 			}
@@ -184,8 +198,6 @@ main :: proc() {
 						rl.BLACK,
 					)
 				}
-
-
 			}
 		}
 
@@ -208,6 +220,7 @@ main :: proc() {
 		check_player_cell_bounds()
 		set_visible_cells()
 
+
 		rl.DrawRectangle(locx, locy, CELL_SIZE, CELL_SIZE, {40, 85, 120, 255})
 		rl.EndDrawing()
 	}
@@ -228,10 +241,15 @@ check_player_cell_bounds :: proc() {
 		d.x = x
 		d.y = y
 		fmt.println("type", c.type)
+
 	}
 
-	append(&list_of_voids, c)
-	c.type = .void
+	xz: i32 = check_for_the_mined_cell()
+
+	if (xz <= 0) {
+		append(&list_of_voids, c)
+		c.type = .void
+	}
 }
 
 set_visible_cells :: proc() {
@@ -244,7 +262,25 @@ set_visible_cells :: proc() {
 		(grid[cc.x - 1][cc.y]).visible = true
 		(grid[cc.x][cc.y - 1]).visible = true
 		(grid[cc.x + 1][cc.y]).visible = true
+
 		(grid[cc.x][cc.y + 1]).visible = true
 
 	}
+}
+
+
+check_for_the_mined_cell :: proc() -> i32 {
+
+	//the plan: we want to keep track of last location before we touch a rock, if we touch a rock we should 'hit' maybe move back to the last known loc and yello flash?
+	//player loc
+	x := locx / 10
+	y := locy / 10
+
+	//keep track of 3 last pos
+	loc_data.range[2] = loc_data.range[1]
+	loc_data.range[1] = loc_data.range[0]
+	loc_data.range[0] = {x, y}
+
+	return 0
+
 }

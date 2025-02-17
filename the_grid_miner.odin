@@ -60,26 +60,31 @@ main :: proc() {
 
 	locx = SCREEN_WIDTH / 2
 	locy = SCREEN_HEIGHT / 2
+
+	loc_data.range[0] = {locx / CELL_SIZE, locy / CELL_SIZE}
+	loc_data.range[1] = loc_data.range[0]
+	loc_data.range[2] = loc_data.range[0]
+
 	//init the grid
 	for i: i32 = 0; i < SCREEN_WIDTH / CELL_SIZE; i += 1 {
-		for ii: i32 = 0; ii < SCREEN_HEIGHT / CELL_SIZE; ii += 1 {
+		for j: i32 = 0; j < SCREEN_HEIGHT / CELL_SIZE; j += 1 {
 
 			valx := (locx / 10) - i
-			valy := (locy / 10) - ii
+			valy := (locy / 10) - j
 
 			//if we are close to the controled sqare we skip creating cell there
 			if math.abs(valx) < 4 && math.abs(valy) < 4 {
 
 				c: Cell
 				c.x = i
-				c.y = ii
+				c.y = j
 				c.life = 0
 				c.type = .void
 				c.visible = true
 
-				grid[i][ii] = c
+				grid[i][j] = c
 
-				append(&list_of_voids, &grid[i][ii])
+				append(&list_of_voids, &grid[i][j])
 				continue
 
 			}
@@ -88,7 +93,7 @@ main :: proc() {
 
 			c: Cell
 			c.x = i
-			c.y = ii
+			c.y = j
 			c.visible = false
 
 			if (theNum < 0.03) {
@@ -99,12 +104,12 @@ main :: proc() {
 				c.life = 100
 			} else if (theNum < 0.2) {
 				c.type = .crystal
-				c.life = 20
+				c.life = 30
 			} else {
 				c.type = .rock
-				c.life = 10
+				c.life = 20
 			}
-			grid[i][ii] = c
+			grid[i][j] = c
 		}
 	}
 
@@ -275,19 +280,35 @@ check_for_the_mined_cell :: proc() -> i32 {
 		loc_data.range[0] = {x, y}
 	}
 
-
-	fmt.println(loc_data.range[2])
-	fmt.println(x, y)
 	if ((grid[x][y]).type != .void) {
-		fmt.println(loc_data.range[2].x)
-		locx = loc_data.range[2].x * 10
 
-		locy = loc_data.range[2].y * 10
+		prev_cell := loc_data.range[1]
+		current_cell := loc_data.range[0]
 
-		(grid[x][y]).life -= 10
+		dx := current_cell.x - prev_cell.x
+		dy := current_cell.y - prev_cell.y
+
+		// Adjust X position based on horizontal movement direction
+		switch dx {
+		case 1:
+			locx = prev_cell.x * CELL_SIZE + CELL_SIZE - 1
+		case -1:
+			locx = prev_cell.x * CELL_SIZE
+		case 0:
+		// No horizontal movement; do nothing
+		}
+
+		// Adjust Y position based on vertical movement direction
+		switch dy {
+		case 1:
+			locy = prev_cell.y * CELL_SIZE + CELL_SIZE - 1
+		case -1:
+			locy = prev_cell.y * CELL_SIZE
+		case 0:
+		// No vertical movement; do nothing
+		}
+		(grid[x][y]).life -= 1
 	}
 
-
 	return i32((grid[x][y]).life)
-
 }

@@ -92,27 +92,19 @@ main :: proc() {
 			c.y = ii
 			c.visible = false
 
-			if (theNum < 0.1) {
+			if (theNum < 0.03) {
 				c.type = .gold
 				c.life = 200
-			}
-
-			if (theNum > 0.1 && theNum < 0.3) {
+			} else if (theNum < 0.1) {
 				c.type = .silver
 				c.life = 100
-			}
-
-			if (theNum > 0.3 && theNum < 0.5) {
+			} else if (theNum < 0.2) {
 				c.type = .crystal
 				c.life = 20
-			}
-
-			if (theNum > 0.5) {
-
+			} else {
 				c.type = .rock
 				c.life = 10
 			}
-
 			grid[i][ii] = c
 		}
 	}

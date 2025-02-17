@@ -120,17 +120,12 @@ main :: proc() {
 		// The plan: ???
 
 		// the X grid draw
-		for i in 0 ..< SCREEN_WIDTH {
-			rl.DrawLine(grid_x, 0, grid_x, SCREEN_HEIGHT, rl.BLACK)
-			grid_x += CELL_SIZE
+		for i in i32(1) ..< (SCREEN_WIDTH / CELL_SIZE) {
+			rl.DrawLine(i * CELL_SIZE, 0, i * CELL_SIZE, SCREEN_HEIGHT, rl.BLACK)
 		}
-
-		// the Y grid draw
-		for i in 0 ..< SCREEN_HEIGHT {
-			rl.DrawLine(0, grid_y, SCREEN_WIDTH, grid_y, rl.BLACK)
-			grid_y += CELL_SIZE
+		for i in i32(1) ..< (SCREEN_HEIGHT / CELL_SIZE) {
+			rl.DrawLine(0, i * CELL_SIZE, SCREEN_WIDTH, i * CELL_SIZE, rl.BLACK)
 		}
-
 		// cell drawing
 		for x in 0 ..< SCREEN_WIDTH / CELL_SIZE {
 			for y in 0 ..< SCREEN_HEIGHT / CELL_SIZE {
@@ -236,9 +231,9 @@ check_player_cell_bounds :: proc() {
 
 	xz: i32 = check_for_the_mined_cell()
 
-	if (xz <= 0) {
-		append(&list_of_voids, c)
+	if (xz <= 0 && c.type != .void) {
 		c.type = .void
+		append(&list_of_voids, c)
 	}
 }
 

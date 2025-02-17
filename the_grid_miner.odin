@@ -56,7 +56,6 @@ main :: proc() {
 	rl.SetTraceLogLevel(.WARNING)
 	rl.InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "The Grid Miner")
 	defer (rl.CloseWindow())
-
 	rl.SetTargetFPS(60)
 
 	locx = SCREEN_WIDTH / 2
@@ -113,6 +112,7 @@ main :: proc() {
 
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.BLACK)
+
 
 		grid_x: i32 = CELL_SIZE
 		grid_y: i32 = CELL_SIZE
@@ -205,6 +205,9 @@ main :: proc() {
 
 		check_player_cell_bounds()
 		set_visible_cells()
+
+		locx = clamp(locx, 0, SCREEN_WIDTH - CELL_SIZE)
+		locy = clamp(locy, 0, SCREEN_HEIGHT - CELL_SIZE)
 
 
 		rl.DrawRectangle(locx, locy, CELL_SIZE, CELL_SIZE, {40, 85, 120, 255})

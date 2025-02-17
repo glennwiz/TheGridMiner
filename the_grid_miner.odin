@@ -80,7 +80,7 @@ main :: proc() {
 
 					grid[i][ii] = c
 
-					append(&list_of_voids, &c)
+					append(&list_of_voids, &grid[i][ii])
 					continue
 				}
 			}

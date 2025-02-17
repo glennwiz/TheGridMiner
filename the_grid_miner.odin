@@ -261,7 +261,6 @@ set_visible_cells :: proc() {
 	}
 }
 
-
 check_for_the_mined_cell :: proc() -> i32 {
 
 	//the plan: we want to keep track of last location before we touch a rock, if we touch a rock we should 'hit' maybe move back to the last known loc and yello flash?
@@ -269,11 +268,26 @@ check_for_the_mined_cell :: proc() -> i32 {
 	x := locx / 10
 	y := locy / 10
 
-	//keep track of 3 last pos
-	loc_data.range[2] = loc_data.range[1]
-	loc_data.range[1] = loc_data.range[0]
-	loc_data.range[0] = {x, y}
+	// Only update if position changed
+	if loc_data.range[0].x != x || loc_data.range[0].y != y {
+		loc_data.range[2] = loc_data.range[1]
+		loc_data.range[1] = loc_data.range[0]
+		loc_data.range[0] = {x, y}
+	}
 
-	return 0
+
+	fmt.println(loc_data.range[2])
+	fmt.println(x, y)
+	if ((grid[x][y]).type != .void) {
+		fmt.println(loc_data.range[2].x)
+		locx = loc_data.range[2].x * 10
+
+		locy = loc_data.range[2].y * 10
+
+		(grid[x][y]).life -= 10
+	}
+
+
+	return i32((grid[x][y]).life)
 
 }

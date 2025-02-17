@@ -292,8 +292,10 @@ check_for_the_mined_cell :: proc() -> i32 {
 		switch dx {
 		case 1:
 			locx = prev_cell.x * CELL_SIZE + CELL_SIZE - 1
+			locx -= 2
 		case -1:
 			locx = prev_cell.x * CELL_SIZE
+			locx += 2
 		case 0:
 		// No horizontal movement; do nothing
 		}
@@ -302,8 +304,10 @@ check_for_the_mined_cell :: proc() -> i32 {
 		switch dy {
 		case 1:
 			locy = prev_cell.y * CELL_SIZE + CELL_SIZE - 1
+			locy -= 2
 		case -1:
 			locy = prev_cell.y * CELL_SIZE
+			locy += 2
 		case 0:
 		// No vertical movement; do nothing
 		}

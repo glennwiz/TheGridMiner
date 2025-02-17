@@ -55,6 +55,8 @@ main :: proc() {
 
 	rl.SetTraceLogLevel(.WARNING)
 	rl.InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "The Grid Miner")
+	defer (rl.CloseWindow())
+
 	rl.SetTargetFPS(60)
 
 	locx = SCREEN_WIDTH / 2
@@ -63,27 +65,24 @@ main :: proc() {
 	for i: i32 = 0; i < SCREEN_WIDTH / CELL_SIZE; i += 1 {
 		for ii: i32 = 0; ii < SCREEN_HEIGHT / CELL_SIZE; ii += 1 {
 
-
 			valx := (locx / 10) - i
 			valy := (locy / 10) - ii
 
 			//if we are close to the controled sqare we skip creating cell there
-			if valx < 4 && math.abs(valy) < 4 {
-				if valy < 4 && math.abs(valx) < 4 {
+			if math.abs(valx) < 4 && math.abs(valy) < 4 {
 
-					c: Cell
-					c.x = i
-					c.y = ii
-					c.life = 0
-					c.type = .void
-					c.visible = true
+				c: Cell
+				c.x = i
+				c.y = ii
+				c.life = 0
+				c.type = .void
+				c.visible = true
 
+				grid[i][ii] = c
 
-					grid[i][ii] = c
+				append(&list_of_voids, &grid[i][ii])
+				continue
 
-					append(&list_of_voids, &grid[i][ii])
-					continue
-				}
 			}
 
 			theNum := r.float64()
@@ -233,7 +232,6 @@ check_player_cell_bounds :: proc() {
 		d.x = x
 		d.y = y
 		fmt.println("type", c.type)
-
 	}
 
 	xz: i32 = check_for_the_mined_cell()
@@ -250,13 +248,18 @@ set_visible_cells :: proc() {
 	for c in 0 ..< len(list_of_voids) {
 
 		cc := list_of_voids[c]
-
-		(grid[cc.x - 1][cc.y]).visible = true
-		(grid[cc.x][cc.y - 1]).visible = true
-		(grid[cc.x + 1][cc.y]).visible = true
-
-		(grid[cc.x][cc.y + 1]).visible = true
-
+		if cc.x > 0 {
+			grid[cc.x - 1][cc.y].visible = true
+		}
+		if cc.x < (SCREEN_WIDTH / CELL_SIZE - 1) {
+			grid[cc.x + 1][cc.y].visible = true
+		}
+		if cc.y > 0 {
+			grid[cc.x][cc.y - 1].visible = true
+		}
+		if cc.y < (SCREEN_HEIGHT / CELL_SIZE - 1) {
+			grid[cc.x][cc.y + 1].visible = true
+		}
 	}
 }
 

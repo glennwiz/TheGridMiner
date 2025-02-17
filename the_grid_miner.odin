@@ -55,6 +55,7 @@ main :: proc() {
 
 	rl.SetTraceLogLevel(.WARNING)
 	rl.InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "The Grid Miner")
+	rl.SetTargetFPS(60)
 
 	locx = SCREEN_WIDTH / 2
 	locy = SCREEN_HEIGHT / 2
@@ -114,7 +115,6 @@ main :: proc() {
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.BLACK)
 
-		rl.SetTargetFPS(60)
 		grid_x: i32 = CELL_SIZE
 		grid_y: i32 = CELL_SIZE
 
